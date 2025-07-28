@@ -185,11 +185,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/bao312/Desktop/SSR/backend/OrbitMall.Api/OrbitMall.Api.csproj",
+      "projectUniqueName": "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Api/OrbitMall.Api.csproj",
       "projectName": "OrbitMall.Api",
-      "projectPath": "/Users/bao312/Desktop/SSR/backend/OrbitMall.Api/OrbitMall.Api.csproj",
+      "projectPath": "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Api/OrbitMall.Api.csproj",
       "packagesPath": "/Users/bao312/.nuget/packages/",
-      "outputPath": "/Users/bao312/Desktop/SSR/backend/OrbitMall.Api/obj/",
+      "outputPath": "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Api/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/bao312/.nuget/NuGet/NuGet.Config"
@@ -205,20 +205,20 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "/Users/bao312/Desktop/SSR/backend/OrbitMall.Application/OrbitMall.Application.csproj": {
-              "projectPath": "/Users/bao312/Desktop/SSR/backend/OrbitMall.Application/OrbitMall.Application.csproj"
+            "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Application/OrbitMall.Application.csproj": {
+              "projectPath": "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Application/OrbitMall.Application.csproj"
             },
-            "/Users/bao312/Desktop/SSR/backend/OrbitMall.Common/OrbitMall.Common.csproj": {
-              "projectPath": "/Users/bao312/Desktop/SSR/backend/OrbitMall.Common/OrbitMall.Common.csproj"
+            "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Common/OrbitMall.Common.csproj": {
+              "projectPath": "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Common/OrbitMall.Common.csproj"
             },
-            "/Users/bao312/Desktop/SSR/backend/OrbitMall.Contracts/OrbitMall.Contracts.csproj": {
-              "projectPath": "/Users/bao312/Desktop/SSR/backend/OrbitMall.Contracts/OrbitMall.Contracts.csproj"
+            "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Contracts/OrbitMall.Contracts.csproj": {
+              "projectPath": "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Contracts/OrbitMall.Contracts.csproj"
             },
-            "/Users/bao312/Desktop/SSR/backend/OrbitMall.Infrastructure/OrbitMall.Infrastructure.csproj": {
-              "projectPath": "/Users/bao312/Desktop/SSR/backend/OrbitMall.Infrastructure/OrbitMall.Infrastructure.csproj"
+            "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Infrastructure/OrbitMall.Infrastructure.csproj": {
+              "projectPath": "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Infrastructure/OrbitMall.Infrastructure.csproj"
             },
-            "/Users/bao312/Desktop/SSR/backend/OrbitMall.Persistence/OrbitMall.Persistence.csproj": {
-              "projectPath": "/Users/bao312/Desktop/SSR/backend/OrbitMall.Persistence/OrbitMall.Persistence.csproj"
+            "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Persistence/OrbitMall.Persistence.csproj": {
+              "projectPath": "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Persistence/OrbitMall.Persistence.csproj"
             }
           }
         }
