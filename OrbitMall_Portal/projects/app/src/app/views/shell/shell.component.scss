@@ -1,0 +1,38 @@
+.shell-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background-color: #f8f9fa;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #dee2e6;
+  
+  h1 {
+    margin: 0 0 1rem 0;
+    color: #333;
+  }
+  
+  nav {
+    display: flex;
+    gap: 1rem;
+    
+    a {
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      color: #007bff;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+      
+      &:hover {
+        background-color: #e9ecef;
+      }
+    }
+  }
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+}

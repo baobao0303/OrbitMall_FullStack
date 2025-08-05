@@ -5,10 +5,14 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build app --configuration production",
+    "build:dev": "ng build app --configuration development",
     "build:library": "ng build --project=@application/base && ng build --project=@application/commands && ng build --project=@application/helpers && ng build --project=@core/base && ng build --project=@application/messages && ng build --project=@core/domain && ng build --project=@infrastructure/base && ng build --project=@application/queries && ng build --project=@infrastructure/authorization && ng build --project=@infrastructure/base && ng build --project=@view/base",
+    "build:all": "npm run build:library && npm run build:prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:app": "node dist/app/server/server.mjs"
+    "serve:ssr:app": "node dist/app/server/server.mjs",
+    "start:ssr": "npm run build:prod && npm run serve:ssr:app"
   },
   "private": true,
   "dependencies": {

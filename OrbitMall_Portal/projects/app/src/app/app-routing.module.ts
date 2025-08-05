@@ -15,13 +15,14 @@ const routes: Routes = [
       import('./views/sign-in/sign-in.component').then(
         (c) => c.SignInComponent
       ),
+    data: { ssrOnly: true },
   },
   {
     path: '',
-    redirectTo: '',
+    redirectTo: '/sign-in',
     pathMatch: 'full',
   },
-  { path: '**', redirectTo: '/page-not-found' },
+  { path: '**', redirectTo: '/sign-in' },
 ];
 
 @NgModule({

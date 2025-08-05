@@ -4,7 +4,7 @@ import {
   withComponentInputBinding,
   Routes,
 } from '@angular/router';
-import { provideClientHydration } from '@angular/platform-browser';
+import { provideClientHydration, withNoHttpTransferCache } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ORBITMAIL_PORTALContext } from '@infrastructure/base';
@@ -33,6 +33,7 @@ const routes: Routes = [
           import('./views/sign-up/sign-up.component').then(
             (c) => c.SignUpComponent
           ),
+        data: { prerender: false, ssr: false },
       },
       {
         path: 'sign-in',
@@ -40,6 +41,7 @@ const routes: Routes = [
           import('./views/sign-in/sign-in.component').then(
             (c) => c.SignInComponent
           ),
+        data: { ssrOnly: true },
       },
       {
         path: '',
