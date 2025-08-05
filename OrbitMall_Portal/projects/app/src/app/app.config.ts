@@ -6,11 +6,7 @@ import {
 } from '@angular/router';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import {
-  HTTP_INTERCEPTORS,
-  provideHttpClient,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ORBITMAIL_PORTALContext } from '@infrastructure/base';
 import { AuthorizationTokenInterceptor } from '@infrastructure/authorization';
 import {
