@@ -3,3 +3,4 @@
  */
 
 export * from './lib/weather/get-all.query.handler';
+export * from './lib/vrto';
