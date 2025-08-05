@@ -21,6 +21,10 @@ import { ViewRefMapper } from './view.ref.mapper';
 
 const routes: Routes = []; // Empty routes array, same as in app-routing.module.ts
 
+console.log('🔧 App Config - Loading providers...');
+console.log('📍 Environment URI:', environment.URI);
+console.log('🔗 Routes configured:', routes);
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding()),
@@ -39,10 +43,14 @@ export const appConfig: ApplicationConfig = {
       provide: ORBITMAIL_PORTALContext,
       useFactory: () => {
         const uri = environment.URI;
+        console.log('🏭 ORBITMAIL_PORTALContext factory - URI:', uri);
         var xfwContext = new ORBITMAIL_PORTALContext();
         xfwContext.endPoint = uri;
+        console.log('✅ ORBITMAIL_PORTALContext created:', xfwContext);
         return xfwContext;
       },
     },
   ],
 };
+
+console.log('✅ App Config - All providers configured:', appConfig.providers.length, 'providers');
