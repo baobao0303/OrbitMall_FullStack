@@ -1,5 +1,9 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter, withComponentInputBinding, Routes } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  Routes,
+} from '@angular/router';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
@@ -19,7 +23,37 @@ import { environment } from '../environments/environment';
 import { ViewCommandMapper } from './view.command.mapper';
 import { ViewRefMapper } from './view.ref.mapper';
 
-const routes: Routes = []; // Empty routes array, same as in app-routing.module.ts
+const routes: Routes = [
+  {
+    path: '',
+    loadComponent: () =>
+      import('./views/shell/shell.component').then(
+        (c) => c.ShellComponent
+      ),
+    children: [
+      {
+        path: 'sign-up',
+        loadComponent: () =>
+          import('./views/sign-up/sign-up.component').then(
+            (c) => c.SignUpComponent
+          ),
+      },
+      {
+        path: 'sign-in',
+        loadComponent: () =>
+          import('./views/sign-in/sign-in.component').then(
+            (c) => c.SignInComponent
+          ),
+      },
+      {
+        path: '',
+        redirectTo: '/sign-in',
+        pathMatch: 'full',
+      },
+    ],
+  },
+  { path: '**', redirectTo: '/sign-in' },
+];
 
 console.log('🔧 App Config - Loading providers...');
 console.log('📍 Environment URI:', environment.URI);
@@ -53,4 +87,8 @@ export const appConfig: ApplicationConfig = {
   ],
 };
 
-console.log('✅ App Config - All providers configured:', appConfig.providers.length, 'providers');
+console.log(
+  '✅ App Config - All providers configured:',
+  appConfig.providers.length,
+  'providers'
+);
