@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:library": "ng build --project=@application/base && ng build --project=@application/commands && ng build --project=@application/helpers && ng build --project=@core/base && ng build --project=@application/messages && ng build --project=@core/domain && ng build --project=@infrastructure/base && ng build --project=@application/queries && ng build --project=@infrastructure/authorization && ng build --project=@infrastructure/base && ng build --project=@view/base",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:app": "node dist/app/server/server.mjs"

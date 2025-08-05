@@ -71,7 +71,10 @@ export class AuthorizationTokenInterceptor implements HttpInterceptor {
    * @returns `true` if the request should be intercepted, `false` otherwise.
    */
   private _shouldIntercept(req: HttpRequest<any>): boolean {
-    const blacklist = ['/User/sign-in', '/ORBITMAIL_PORTALToken/verify-access-token'];
+    const blacklist = [
+      '/User/sign-in',
+      '/ORBITMAIL_PORTALToken/verify-access-token',
+    ];
     return blacklist.every((path) => !req.url.includes(path));
   }
 
