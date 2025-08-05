@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-commands',
-  standalone: true,
-  imports: [],
-  template: `
+    selector: 'lib-commands',
+    imports: [],
+    template: `
     <p>
       commands works!
     </p>
   `,
-  styles: ``
+    styles: ``
 })
 export class CommandsComponent {
 
