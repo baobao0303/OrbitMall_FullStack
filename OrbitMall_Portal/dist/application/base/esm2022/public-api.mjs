@@ -1,0 +1,5 @@
+/*
+ * Public API Surface of base
+ */
+export * from './lib/request.handler';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL3Byb2plY3RzL2FwcGxpY2F0aW9uL2Jhc2Uvc3JjL3B1YmxpYy1hcGkudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7O0dBRUc7QUFDSCxjQUFjLHVCQUF1QixDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLypcbiAqIFB1YmxpYyBBUEkgU3VyZmFjZSBvZiBiYXNlXG4gKi9cbmV4cG9ydCAqIGZyb20gJy4vbGliL3JlcXVlc3QuaGFuZGxlcic7XG4iXX0=
