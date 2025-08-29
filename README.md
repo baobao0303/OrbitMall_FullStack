@@ -11,6 +11,11 @@
   - **SSR (Server-Side Rendering)**: Enhances SEO and initial load performance.
   - **SSG (Static Site Generation)**: Optimized for serving static content efficiently.
 
+# NG WORD SEARCH(DEMO)
+- **.NODE.JS**: USING MODEL MVC
+
+
+
 ---
 
 > 💡 Note: This project combines modern technologies with custom solutions to ensure high performance, scalability, and a seamless user experience.
