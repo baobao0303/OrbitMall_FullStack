@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %> - Admin Dashboard</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom CSS -->
+    <style>
+      body {
+        background: #f8fafc;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Sidebar -->
+    <div class="flex h-screen bg-gray-100">
+      <!-- Sidebar -->
+      <div class="w-64 bg-white shadow-lg">
+        <div class="p-6">
+          <h1 class="text-2xl font-bold text-gray-800">NG Word Search</h1>
+          <p class="text-gray-600 text-sm">Admin Panel</p>
+        </div>
+
+        <nav class="mt-6">
+          <a
+            href="/admin/dashboard"
+            class="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+          >
+            <span class="mr-3">📊</span>
+            Dashboard
+          </a>
+          <a href="/admin/users" class="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+            <span class="mr-3">👥</span>
+            Users
+          </a>
+          <a href="/admin/games" class="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600">
+            <span class="mr-3">🎮</span>
+            Games
+          </a>
+          <a
+            href="/admin/settings"
+            class="flex items-center px-6 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+          >
+            <span class="mr-3">⚙️</span>
+            Settings
+          </a>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+          <div class="flex items-center justify-between px-6 py-4">
+            <h2 class="text-xl font-semibold text-gray-800"><%= title %></h2>
+            <div class="flex items-center space-x-4">
+              <span class="text-gray-600">Welcome, Admin</span>
+              <a href="/auth/api/logout" class="text-red-600 hover:text-red-800">Logout</a>
+            </div>
+          </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6"><%- body %></main>
+      </div>
+    </div>
+  </body>
+</html>
