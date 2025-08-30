@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "npx nodemon",
     "build": "rimraf ./dist && tsc && tsc-alias",
+    "openai": "npx ts-node -r dotenv/config src/feature/ai/basic/index.ts",
     "start": "node dist/index.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -53,6 +54,7 @@
     "joi": "^17.13.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.1",
+    "openai": "^5.16.0",
     "tailwindcss": "^4.1.12"
   }
 }
