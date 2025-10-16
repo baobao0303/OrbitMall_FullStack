@@ -1,7 +1,0 @@
-/*
- * Public API Surface of authorization
- */
-export * from './lib/authorization.constant';
-export * from './lib/guards';
-export * from './lib/interceptors';
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL3Byb2plY3RzL2luZnJhc3RydWN0dXJlL2F1dGhvcml6YXRpb24vc3JjL3B1YmxpYy1hcGkudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7O0dBRUc7QUFDSCxjQUFjLDhCQUE4QixDQUFDO0FBQzdDLGNBQWMsY0FBYyxDQUFDO0FBQzdCLGNBQWMsb0JBQW9CLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICogUHVibGljIEFQSSBTdXJmYWNlIG9mIGF1dGhvcml6YXRpb25cbiAqL1xuZXhwb3J0ICogZnJvbSAnLi9saWIvYXV0aG9yaXphdGlvbi5jb25zdGFudCc7XG5leHBvcnQgKiBmcm9tICcuL2xpYi9ndWFyZHMnO1xuZXhwb3J0ICogZnJvbSAnLi9saWIvaW50ZXJjZXB0b3JzJztcbiJdfQ==
