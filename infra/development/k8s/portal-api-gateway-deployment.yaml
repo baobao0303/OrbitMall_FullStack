@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal-api-gateway
+  labels:
+    app: portal-api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portal-api-gateway
+  template:
+    metadata:
+      labels:
+        app: portal-api-gateway
+    spec:
+      containers:
+      - name: portal-api-gateway
+        image: ride-sharing/portal-api-gateway
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5050
+          name: http
+        env:
+        - name: PORT
+          value: "5050"
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: ENVIRONMENT
+        readinessProbe:
+          httpGet:
+            path: /swagger
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /swagger
+            port: http
+          initialDelaySeconds: 20
+          periodSeconds: 20
+

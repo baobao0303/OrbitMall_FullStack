@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-ng-word-search
+  labels:
+    app: web-ng-word-search
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-ng-word-search
+  template:
+    metadata:
+      labels:
+        app: web-ng-word-search
+    spec:
+      containers:
+      - name: web-ng-word-search
+        image: ride-sharing/web-ng-word-search
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 6001
+          name: http
+        env:
+        - name: PORT
+          value: "6001"
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: app-config
+              key: ENVIRONMENT
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 20
+          periodSeconds: 20

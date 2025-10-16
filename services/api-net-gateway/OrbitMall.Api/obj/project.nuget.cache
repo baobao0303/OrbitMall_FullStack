@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "KnsZsXl4Dac=",
+  "success": true,
+  "projectFilePath": "/Users/bao312/Desktop/SSR/OrbitMall_Backend/OrbitMall.Api/OrbitMall.Api.csproj",
+  "expectedPackageFiles": [
+    "/Users/bao312/.nuget/packages/microsoft.aspnetcore.openapi/9.0.7/microsoft.aspnetcore.openapi.9.0.7.nupkg.sha512",
+    "/Users/bao312/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
+  ],
+  "logs": []
+}
