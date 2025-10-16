@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-portal
+  labels:
+    app: web-portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-portal
+  template:
+    metadata:
+      labels:
+        app: web-portal
+    spec:
+      containers:
+      - name: web-portal
+        image: ride-sharing/web-portal
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 4000
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "development"
+        - name: PORT
+          value: "4000"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /
+            port: http
+          initialDelaySeconds: 40
+          periodSeconds: 20
+
