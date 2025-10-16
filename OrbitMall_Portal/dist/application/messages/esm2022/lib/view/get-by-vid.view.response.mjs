@@ -1,0 +1,11 @@
+import { __decorate } from "tslib";
+import { propertyMapper } from '@core/base';
+export class GetByVidViewResponse {
+    constructor() {
+        this.title = '';
+    }
+}
+__decorate([
+    propertyMapper('title', String)
+], GetByVidViewResponse.prototype, "title", void 0);
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiZ2V0LWJ5LXZpZC52aWV3LnJlc3BvbnNlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vLi4vLi4vcHJvamVjdHMvYXBwbGljYXRpb24vbWVzc2FnZXMvc3JjL2xpYi92aWV3L2dldC1ieS12aWQudmlldy5yZXNwb25zZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQUEsT0FBTyxFQUFFLGNBQWMsRUFBRSxNQUFNLFlBQVksQ0FBQztBQUU1QyxNQUFNLE9BQU8sb0JBQW9CO0lBQWpDO1FBRVMsVUFBSyxHQUFXLEVBQUUsQ0FBQztJQUM1QixDQUFDO0NBQUE7QUFEUTtJQUROLGNBQWMsQ0FBQyxPQUFPLEVBQUUsTUFBTSxDQUFDO21EQUNOIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgcHJvcGVydHlNYXBwZXIgfSBmcm9tICdAY29yZS9iYXNlJztcblxuZXhwb3J0IGNsYXNzIEdldEJ5VmlkVmlld1Jlc3BvbnNlIHtcbiAgQHByb3BlcnR5TWFwcGVyKCd0aXRsZScsIFN0cmluZylcbiAgcHVibGljIHRpdGxlOiBzdHJpbmcgPSAnJztcbn1cbiJdfQ==

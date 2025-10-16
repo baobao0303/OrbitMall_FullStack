@@ -1,0 +1,11 @@
+/*
+ * Public API Surface of base
+ */
+export * from './lib/mapper';
+export * from './lib/interface.base.repository';
+export * from './lib/interface.readable.repository';
+export * from './lib/interface.writeable.repository';
+export * from './lib/bo.base';
+export * from './lib/paging.base.response';
+export * from './lib/paging.base.request';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL3Byb2plY3RzL2NvcmUvYmFzZS9zcmMvcHVibGljLWFwaS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7R0FFRztBQUVILGNBQWMsY0FBYyxDQUFDO0FBQzdCLGNBQWMsaUNBQWlDLENBQUM7QUFDaEQsY0FBYyxxQ0FBcUMsQ0FBQztBQUNwRCxjQUFjLHNDQUFzQyxDQUFDO0FBQ3JELGNBQWMsZUFBZSxDQUFDO0FBQzlCLGNBQWMsNEJBQTRCLENBQUM7QUFDM0MsY0FBYywyQkFBMkIsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIi8qXG4gKiBQdWJsaWMgQVBJIFN1cmZhY2Ugb2YgYmFzZVxuICovXG5cbmV4cG9ydCAqIGZyb20gJy4vbGliL21hcHBlcic7XG5leHBvcnQgKiBmcm9tICcuL2xpYi9pbnRlcmZhY2UuYmFzZS5yZXBvc2l0b3J5JztcbmV4cG9ydCAqIGZyb20gJy4vbGliL2ludGVyZmFjZS5yZWFkYWJsZS5yZXBvc2l0b3J5JztcbmV4cG9ydCAqIGZyb20gJy4vbGliL2ludGVyZmFjZS53cml0ZWFibGUucmVwb3NpdG9yeSc7XG5leHBvcnQgKiBmcm9tICcuL2xpYi9iby5iYXNlJztcbmV4cG9ydCAqIGZyb20gJy4vbGliL3BhZ2luZy5iYXNlLnJlc3BvbnNlJztcbmV4cG9ydCAqIGZyb20gJy4vbGliL3BhZ2luZy5iYXNlLnJlcXVlc3QnO1xuIl19

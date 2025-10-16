@@ -1,0 +1,6 @@
+/*
+ * Public API Surface of commands
+ */
+export * from './lib/commands.service';
+export * from './lib/commands.component';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL3Byb2plY3RzL2FwcGxpY2F0aW9uL2NvbW1hbmRzL3NyYy9wdWJsaWMtYXBpLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOztHQUVHO0FBRUgsY0FBYyx3QkFBd0IsQ0FBQztBQUN2QyxjQUFjLDBCQUEwQixDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiLypcbiAqIFB1YmxpYyBBUEkgU3VyZmFjZSBvZiBjb21tYW5kc1xuICovXG5cbmV4cG9ydCAqIGZyb20gJy4vbGliL2NvbW1hbmRzLnNlcnZpY2UnO1xuZXhwb3J0ICogZnJvbSAnLi9saWIvY29tbWFuZHMuY29tcG9uZW50JztcbiJdfQ==
