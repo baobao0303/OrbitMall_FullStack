@@ -25,7 +25,7 @@ class AuthController {
   // CREATE AUTH - SIGNUP BASICALLY
   public async signUp(req: Request, res: Response, next: NextFunction) {
     try {
-      const { fullName, name, email, password, state, city, locality, phone} = req.body;
+      const { fullName, name, email, password, state, city, locality, phone } = req.body;
       const newUser = await User.findOne({ email, phone });
       if (newUser) {
         return next(new BadRequestException('User already exists'));
@@ -84,7 +84,7 @@ class AuthController {
       if (!isPasswordValid) {
         return next(new BadRequestException('Invalid password'));
       }
-      const token = generateToken({
+      const token = await generateToken({
         _id: user._id.toString(),
         name: user.name,
         email: user.email,
@@ -92,15 +92,15 @@ class AuthController {
       });
 
       // SEND TOKEN VIA COOKIE
-      await sendTokenViaCookie(res, (await token).accessToken);
+      await sendTokenViaCookie(res, token.accessToken);
 
       res.status(HttpConstants.SUCCESS).json({
-        message: 'Signin successfully',
-        data: user,
-        token
+        message: 'Đăng nhập thành công',
+        vato: token.accessToken,
+        vrto: token.refreshToken,
+        fullName: user.fullName
       });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }
@@ -150,9 +150,7 @@ class AuthController {
       //SEND LINK = https://localhost:4200/reset-password?verification={token}
       await sendInviteEmail(email, {
         subject: 'Reset Password',
-        data: { user, 
-          link
-         },
+        data: { user, link },
         typeEmail: EMAIL_TYPES.PASSWORD_RESET
       });
       res.status(HttpConstants.SUCCESS).json({
@@ -191,8 +189,11 @@ class AuthController {
       }
       const updatedUser = await User.findByIdAndUpdate(user._id, { isReset: true });
       // SEND MESSAGE TO PHONE
-     const messageResult = await createMessage(phone, `Your verification code is ${randomNumber}. It expires in 15 minutes.`);
-      
+      const messageResult = await createMessage(
+        phone,
+        `Your verification code is ${randomNumber}. It expires in 15 minutes.`
+      );
+
       res.status(HttpConstants.SUCCESS).json({
         message: 'Reset password sent successfully',
         data: updatedUser,
@@ -207,12 +208,12 @@ class AuthController {
   // Verify OTP
   public async verifyOTP(req: Request, res: Response, next: NextFunction) {
     try {
-       const { phone, otp } = req.body;
-       const verification = await Verification.findOne({ phone, randomNumber: otp });
-       if (!verification) {
-         return next(new BadRequestException('Invalid OTP'));
-       }
-       if (verification.used) {
+      const { phone, otp } = req.body;
+      const verification = await Verification.findOne({ phone, randomNumber: otp });
+      if (!verification) {
+        return next(new BadRequestException('Invalid OTP'));
+      }
+      if (verification.used) {
         return next(new BadRequestException('OTP already used'));
       }
       const user = await User.findOne({ phone });
@@ -221,19 +222,19 @@ class AuthController {
       }
 
       // vượt 15 phút thì xoá cái verification
-       // OTP only valid for 15 minutes since creation
-       const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
-       if(verification.createdAt && verification.createdAt < fifteenMinutesAgo) {
-         await Verification.findByIdAndDelete(verification._id);
+      // OTP only valid for 15 minutes since creation
+      const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
+      if (verification.createdAt && verification.createdAt < fifteenMinutesAgo) {
+        await Verification.findByIdAndDelete(verification._id);
         return next(new BadRequestException('OTP expired'));
       }
-       // mark used and reset flag
-       await Verification.findByIdAndUpdate(verification._id, { used: true });
-       const updatedUser = await User.findByIdAndUpdate(user._id, { isReset: false }, { new: true });
+      // mark used and reset flag
+      await Verification.findByIdAndUpdate(verification._id, { used: true });
+      const updatedUser = await User.findByIdAndUpdate(user._id, { isReset: false }, { new: true });
       res.status(HttpConstants.SUCCESS).json({
         message: 'OTP verified successfully',
-         data: updatedUser,
-         token: verification.accessToken
+        data: updatedUser,
+        token: verification.accessToken
       });
     } catch (error) {
       next(error);
@@ -262,6 +263,31 @@ class AuthController {
     }
   }
 
+  // renew-access-token
+  public async renewAccessToken(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { vrto } = req.body;
+      const decoded = jwt.verify(vrto, JWT_SECRET) as JwtPayload & { id: string };
+      const user = await User.findById(decoded.id);
+      if (!user) {
+        return next(new BadRequestException('User not found'));
+      }
+      const token = await generateToken({
+        _id: user._id.toString(),
+        name: user.name,
+        email: user.email,
+        fullName: user.fullName
+      });
+      res.status(HttpConstants.SUCCESS).json({
+        message: 'Renew access token successfully',
+        vato: token.accessToken,
+        vrto: token.refreshToken,
+        fullName: user.fullName
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 const authController: AuthController = new AuthController();
 export default authController;

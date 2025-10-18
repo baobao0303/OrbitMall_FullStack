@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  URI: 'http://localhost:6200/api/v1',
+  URI: 'http://localhost:5050/api/v1',
   locale: 'vi',
 };

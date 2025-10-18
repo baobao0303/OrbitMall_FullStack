@@ -4,6 +4,7 @@ import appRoutes from './globals/routes/appRoutes';
 import setupMongoDB from './globals/config/database';
 import { CustomError, NotFoundException } from './globals/cores/error.core';
 import HttpConstants from './globals/constants/http.constants';
+import cors from 'cors';
 
 export class Server {
   private _app: Application;
@@ -11,6 +12,14 @@ export class Server {
 
   constructor() {
     this._app = express();
+    this._app.use(
+      cors({
+        origin: process.env.CORS_ORIGIN || 'http://localhost:4200',
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+      })
+    );
   }
 
   public async startServer(): Promise<void> {

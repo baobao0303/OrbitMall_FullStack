@@ -1,4 +1,12 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpStatusCode } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpStatusCode,
+  HttpResponse,
+} from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { VRTORequest, VRTOResponse } from '@application/messages';
@@ -13,6 +21,7 @@ import {
   switchMap,
   take,
   throwError,
+  of,
 } from 'rxjs';
 import { AuthorizationConstant } from '../authorization.constant';
 
@@ -34,6 +43,17 @@ export class AuthorizationTokenInterceptor implements HttpInterceptor {
     const clonedRequest = vato ? this._addTokenHeader(req, vato) : req;
 
     return next.handle(clonedRequest).pipe(
+      // Persist tokens when sign-in succeeds
+      switchMap((event) => {
+        if (event instanceof HttpResponse && this._isSignIn(req)) {
+          const body: any = event.body ?? {};
+          if (body?.vato)
+            this._storage.set(AuthorizationConstant.vato, body.vato);
+          if (body?.vrto)
+            this._storage.set(AuthorizationConstant.vrto, body.vrto);
+        }
+        return of(event);
+      }),
       catchError((error) => {
         if (
           error instanceof HttpErrorResponse &&
@@ -64,11 +84,13 @@ export class AuthorizationTokenInterceptor implements HttpInterceptor {
    * @returns `true` if the request should be intercepted, `false` otherwise.
    */
   private _shouldIntercept(req: HttpRequest<any>): boolean {
-    const blacklist = [
-      '/User/sign-in',
-      '/ORBITMAIL_PORTALToken/verify-access-token',
-    ];
-    return blacklist.every((path) => !req.url.includes(path));
+    // Bypass auth header/refresh for public auth endpoints
+    const bypassList = ['/auth/signin', '/auth/signup', '/auth/refresh'];
+    return bypassList.every((path) => !req.url.includes(path));
+  }
+
+  private _isSignIn(req: HttpRequest<any>): boolean {
+    return req.url.includes('/auth/signin');
   }
 
   /**

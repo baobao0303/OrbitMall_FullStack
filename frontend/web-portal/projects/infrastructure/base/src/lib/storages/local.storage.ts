@@ -5,7 +5,14 @@ import { BrowserStorageBase } from './browser.storage.base';
 export class LocalStorage implements BrowserStorageBase {
   public get(key: string) {
     const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : null;
+    if (!item || ['undefined', 'null', ''].includes(item)) {
+      return null;
+    }
+    try {
+      return JSON.parse(item);
+    } catch {
+      return item;
+    }
   }
   public set(key: string, value: string): void {
     localStorage.setItem(key, JSON.stringify(value));

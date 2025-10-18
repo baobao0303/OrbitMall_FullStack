@@ -66,7 +66,7 @@ export abstract class ViewContext {
         this.setViewState('ERROR');
         throw error;
       }),
-      finalize(() => this.setViewState('IDLE')),
+      finalize(() => this.setViewState('IDLE'))
     );
   }
 
@@ -81,10 +81,14 @@ export abstract class ViewContext {
    * @param {Observable<T>} request - The observable request to be executed.
    * @returns {Observable<T>} - An observable that emits the response of the request.
    */
-  protected executeRequestWithLoadingOverlay<T>(request: Observable<T>): Observable<T> {
+  protected executeRequestWithLoadingOverlay<T>(
+    request: Observable<T>
+  ): Observable<T> {
     this.openLoadingOverlay();
 
-    return this.executeRequest(request).pipe(finalize(() => this.closeOverlay()));
+    return this.executeRequest(request).pipe(
+      finalize(() => this.closeOverlay())
+    );
   }
 
   /**
@@ -99,7 +103,10 @@ export abstract class ViewContext {
    * @param {Observable<any>} eventForLoadingOverlay - The event that triggers the closing of the loading overlay.
    * @returns {Observable<T>} - An observable that emits the response of the request.
    */
-  protected executeRequestWithLoadingOverlayAndEvent<T>(request: Observable<T>, eventForLoadingOverlay: Observable<any>): Observable<T> {
+  protected executeRequestWithLoadingOverlayAndEvent<T>(
+    request: Observable<T>,
+    eventForLoadingOverlay: Observable<any>
+  ): Observable<T> {
     this.openLoadingOverlay();
 
     return this.executeRequest(request).pipe(
@@ -116,7 +123,7 @@ export abstract class ViewContext {
       catchError((error) => {
         this.closeOverlay();
         throw error;
-      }),
+      })
     );
   }
 
@@ -128,7 +135,11 @@ export abstract class ViewContext {
     if (this.overlayRef) {
       return;
     }
-    const positionStrategy = this.overlay.position().global().centerHorizontally().centerVertically();
+    const positionStrategy = this.overlay
+      .position()
+      .global()
+      .centerHorizontally()
+      .centerVertically();
     const overlayConfig = new OverlayConfig({
       hasBackdrop: true,
       backdropClass: 'cdk-overlay-dark-backdrop',
@@ -137,7 +148,8 @@ export abstract class ViewContext {
     });
     this.overlayRef = this.overlay.create(overlayConfig);
     const spinnerPortal = new ComponentPortal(MatProgressSpinner);
-    const spinnerRef: ComponentRef<MatProgressSpinner> = this.overlayRef.attach(spinnerPortal);
+    const spinnerRef: ComponentRef<MatProgressSpinner> =
+      this.overlayRef.attach(spinnerPortal);
 
     spinnerRef.instance.diameter = 40;
     spinnerRef.instance.color = 'primary';
@@ -156,18 +168,12 @@ export abstract class ViewContext {
     }
   }
 
-  /**
-   * Retrieves the contact ID from local storage.
-   *
-   * @returns {string} The contact ID if it exists in local storage.
-   * @throws Will log an error to the console if the contact ID is not found in local storage.
-   */
-  public get contactId(): string {
-    const contactId = this.storage.get(AuthorizationConstant.contactId);
-    if (!contactId) {
-      throw new Error('Contact ID not found in local storage.');
+  public get fullName(): string {
+    const fullName = this.storage.get(AuthorizationConstant.fullName);
+    if (!fullName) {
+      throw new Error('Full name not found in local storage.');
     }
-    return contactId;
+    return fullName;
   }
 
   /**

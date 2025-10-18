@@ -16,14 +16,9 @@ export class AuthorizationConstant {
   public static readonly vrto = 'vrto';
 
   /**
-   * Contact ID (usually mapped to the current user's profile or business contact).
-   */
-  public static readonly contactId = 'pid';
-
-  /**
    * User ID representing the authenticated user in the system.
    */
-  public static readonly userId = 'uid';
+  public static readonly fullName = 'fullName';
 
   /**
    * Flag indicating whether the user chose "Remember Me" on login.

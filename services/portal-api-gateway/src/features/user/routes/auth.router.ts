@@ -16,4 +16,7 @@ authRouter.post('/reset-password-phone', asyncWrapper(authController.resetPasswo
 authRouter.post('/verify-otp', asyncWrapper(authController.verifyOTP));
 authRouter.post('/update-password', asyncWrapper(authController.updatePassword));
 
+// router renew access token
+authRouter.post('/renew-access-token', asyncWrapper(authController.renewAccessToken));
+
 export default authRouter;

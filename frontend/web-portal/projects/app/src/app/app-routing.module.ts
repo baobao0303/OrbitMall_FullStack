@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthorizationGuard } from '@infrastructure/authorization';
+import { GuestGuard } from '@infrastructure/authorization';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: 'sign-up',
     loadComponent: () =>
       import('./views/sign-up/sign-up.component').then(
         (c) => c.SignUpComponent
       ),
+    canActivate: [GuestGuard],
   },
   {
     path: 'sign-in',
@@ -16,13 +19,19 @@ const routes: Routes = [
         (c) => c.SignInComponent
       ),
     data: { ssrOnly: true },
+    canActivate: [GuestGuard],
   },
   {
-    path: '',
-    redirectTo: '/',
+    path: 'shell',
+    redirectTo: '',
     pathMatch: 'full',
   },
-  { path: '**', redirectTo: '/sign-in' },
+  {
+    path: 'shell',
+    loadComponent: () =>
+      import('./views/shell/shell.component').then((c) => c.ShellComponent),
+    canActivate: [AuthorizationGuard],
+  },
 ];
 
 @NgModule({

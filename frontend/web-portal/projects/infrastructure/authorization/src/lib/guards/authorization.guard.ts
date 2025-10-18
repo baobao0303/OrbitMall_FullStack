@@ -49,10 +49,9 @@ export class AuthorizationGuard implements CanActivate {
       this.storage.get(AuthorizationConstant.isRemember) === 'true';
     if (!isRemember) {
       // Remove authentication-related data to prevent auto-login
-      this.storage.remove(AuthorizationConstant.contactId);
       this.storage.remove(AuthorizationConstant.vato);
       this.storage.remove(AuthorizationConstant.vrto);
-      this.storage.remove(AuthorizationConstant.userId);
+      this.storage.remove(AuthorizationConstant.fullName);
       this.storage.remove(AuthorizationConstant.isRemember);
       return false;
     } else {

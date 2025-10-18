@@ -1,4 +1,5 @@
 import { Component, Type } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
   VIEW_CONTEXT,
   ViewBase,
@@ -11,7 +12,20 @@ import {
 } from '@view/base';
 
 import { SignInContext } from './sign-in.context';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { RippleModule } from 'primeng/ripple';
 // Create a simple implementation of ViewRenderActionRegistry
 class SignInViewRenderRegistry implements ViewRenderActionRegistry {
   constructor(private readonly component: SignInComponent) {}
@@ -55,7 +69,16 @@ class SignInViewRenderRegistry implements ViewRenderActionRegistry {
 
 @Component({
   selector: 'orbitmail-sign-in',
-  imports: [],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    PasswordModule,
+    CheckboxModule,
+    ButtonModule,
+    RippleModule,
+    RouterModule,
+  ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.scss',
   providers: [
@@ -68,4 +91,39 @@ class SignInViewRenderRegistry implements ViewRenderActionRegistry {
     },
   ],
 })
-export class SignInComponent extends ViewBase {}
+export class SignInComponent extends ViewBase {
+  // FORM CONTROL
+  private readonly _signInForm = new FormGroup({
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email,
+      Validators.maxLength(255),
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.maxLength(255),
+    ]),
+    isTogglePassword: new FormControl(false, []),
+  });
+
+  // public property
+  public get signInForm(): FormGroup {
+    return this._signInForm;
+  }
+  public get signInContext(): SignInContext {
+    return this.getContextAs<SignInContext>();
+  }
+
+  public submitSignIn(): void {
+    if (this._signInForm.invalid) {
+      this._signInForm.markAllAsTouched();
+      return;
+    }
+    this.signInContext.submitSignIn({
+      email: this._signInForm.value.email as string,
+      password: this._signInForm.value.password as string,
+      isRemember: this._signInForm.value.isTogglePassword as boolean,
+    });
+  }
+}

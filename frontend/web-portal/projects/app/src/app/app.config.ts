@@ -27,38 +27,7 @@ import { ViewRefMapper } from './view.ref.mapper';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
-
-const routes: Routes = [
-  {
-    path: '',
-    loadComponent: () =>
-      import('./views/shell/shell.component').then((c) => c.ShellComponent),
-    children: [
-      {
-        path: 'sign-up',
-        loadComponent: () =>
-          import('./views/sign-up/sign-up.component').then(
-            (c) => c.SignUpComponent
-          ),
-        data: { prerender: false, ssr: false },
-      },
-      {
-        path: 'sign-in',
-        loadComponent: () =>
-          import('./views/sign-in/sign-in.component').then(
-            (c) => c.SignInComponent
-          ),
-        data: { ssrOnly: true },
-      },
-      {
-        path: '',
-        redirectTo: '/sign-in',
-        pathMatch: 'full',
-      },
-    ],
-  },
-  { path: '**', redirectTo: '/sign-in' },
-];
+import { routes } from './app-routing.module';
 
 console.log('🔧 App Config - Loading providers...');
 console.log('📍 Environment URI:', environment.URI);
