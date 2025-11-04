@@ -14,3 +14,9 @@ type Coordinate struct {
 	Latitude  float64 `json:"latitude"`
 	Longitude float64 `json:"longitude"`
 }
+
+// OsrmApiResponse represents a subset of OSRM route response used by our service
+type OsrmApiResponse struct {
+    Code   string  `json:"code"`
+    Routes []Route `json:"routes"`
+}

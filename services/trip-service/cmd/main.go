@@ -6,32 +6,31 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	h "ride-sharing/services/trip-service/internal/infrastructure/http"
+	"ride-sharing/services/trip-service/internal/infrastructure/repository"
+	"ride-sharing/services/trip-service/service"
 	"syscall"
 	"time"
-
-	"ride-sharing/shared/env"
-)
-
-var (
-	httpAddr = env.GetString("HTTP_ADDR", ":8081")
 )
 
 func main() {
-	log.Println("Starting API Gateway")
-
+	inmemRepo := repository.NewInmemRepository()
+	svc := service.NewService(inmemRepo)
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("POST /trip/preview", handleTripPreview)
+	httphandler := h.HttpHandler{Service: svc}
+
+	mux.HandleFunc("POST /preview", httphandler.HandleTripPreview)
 
 	server := &http.Server{
-		Addr:    httpAddr,
+		Addr:    ":8083",
 		Handler: mux,
 	}
 
 	serverErrors := make(chan error, 1)
 
 	go func() {
-		log.Printf("Server listening on %s", httpAddr)
+		log.Printf("Server listening on %s", server.Addr)
 		serverErrors <- server.ListenAndServe()
 	}()
 
@@ -40,7 +39,7 @@ func main() {
 
 	select {
 	case err := <-serverErrors:
-		log.Printf("Error starting the server: %v", err)
+		log.Printf("Error starting server: %v", err)
 
 	case sig := <-shutdown:
 		log.Printf("Server is shutting down due to %v signal", sig)
@@ -49,7 +48,7 @@ func main() {
 		defer cancel()
 
 		if err := server.Shutdown(ctx); err != nil {
-			log.Printf("Could not stop the server gracefully: %v", err)
+			log.Printf("Could not stop server gracefully: %v", err)
 			server.Close()
 		}
 	}
