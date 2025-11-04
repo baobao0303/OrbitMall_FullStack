@@ -7,6 +7,7 @@ load('ext://restart_process', 'docker_build_with_restart')
 # k8s_yaml('./infra/development/k8s/secrets.yaml')
 
 k8s_yaml('./infra/development/k8s/app-config.yaml')
+k8s_yaml('./infra/development/k8s/postgres-deployment.yaml')
 
 ### End of K8s Config ###
 ### API Gateway ###
@@ -40,6 +41,39 @@ k8s_yaml('./infra/development/k8s/api-gateway-deployment.yaml')
 k8s_resource('api-gateway', port_forwards=8081,
              resource_deps=['api-gateway-compile'], labels="services")
 ### End of API Gateway ###
+### Auth Service ###
+
+auth_compile_cmd = 'cd services/auth && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ../../build/auth ./cmd/api'
+if os.name == 'nt':
+  auth_compile_cmd = './infra/development/docker/auth-build.bat'
+
+local_resource(
+  'auth-compile',
+  auth_compile_cmd,
+  deps=['./services/auth', './shared'], labels="compiles")
+
+
+docker_build_with_restart(
+  'ride-sharing/auth',
+  '.',
+  entrypoint=['/app/build/auth'],
+  dockerfile='./infra/development/docker/auth.Dockerfile',
+  only=[
+    './build/auth',
+    './shared',
+  ],
+  live_update=[
+    sync('./build', '/app/build'),
+    sync('./shared', '/app/shared'),
+  ],
+)
+
+k8s_yaml('./infra/development/k8s/auth-deployment.yaml')
+k8s_resource('auth', port_forwards=8080,
+             resource_deps=['auth-compile'], labels="services")
+# Postgres deployment is loaded but not shown in UI
+# k8s_resource('postgres', labels="services")
+### End of Auth Service ###
 ### Trip Service ###
 
 # Uncomment once we have a trip service

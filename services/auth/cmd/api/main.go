@@ -71,17 +71,20 @@ func openDB(dsn string) (*sql.DB, error) {
 
 func connectToDB() (*sql.DB, error) {
 	dsn := os.Getenv("DSN")
+	log.Println("Attempting to connect to PostgreSQL...")
 	for{
 		db, err := openDB(dsn)
 		if err != nil {
-			log.Println("Postgres not ready yet...")
+			log.Printf("Postgres not ready yet... (attempt %d/10)", counts+1)
 			counts++
 			if counts > 10 {
+				log.Fatalf("Failed to connect to PostgreSQL after 10 attempts: %v", err)
 				return nil, err
 			}
 			time.Sleep(2 * time.Second)
 			continue
 		}
+		log.Println("✅ Successfully connected to PostgreSQL!")
 		return db, nil
 	}
 }
