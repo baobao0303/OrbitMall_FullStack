@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OrbitMall.Persistence")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a5352f036dfdbce4c5e0dc8e38b85eb49a25ac0f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+254173ea1cf1b5bd5979d8fab1fcea8fed28f45f")]
 [assembly: System.Reflection.AssemblyProductAttribute("OrbitMall.Persistence")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OrbitMall.Persistence")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
