@@ -207,7 +207,8 @@ k8s_resource('web-trip', port_forwards=3000, labels="frontend")
 ### End of Portal API Gateway ###
 ### API .NET Gateway ###
 
-# Temporarily disabled - uncomment to enable
+# DISABLED - Run locally with: cd services/api-net-gateway/OrbitMall.Api && dotnet run --urls "http://localhost:8084"
+# This is disabled in Tilt to avoid port conflicts when running locally
 # docker_build(
 #   'ride-sharing/api-net-gateway',
 #   '.',
@@ -215,7 +216,7 @@ k8s_resource('web-trip', port_forwards=3000, labels="frontend")
 # )
 # 
 # k8s_yaml('./infra/development/k8s/api-net-gateway-deployment.yaml')
-# k8s_resource('api-net-gateway', port_forwards=8080, labels="services")
+# k8s_resource('api-net-gateway', port_forwards=8084, labels="services")
 
 ### End of API .NET Gateway ###
 ### Word Search App ###
