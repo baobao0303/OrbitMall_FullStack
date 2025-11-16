@@ -107,6 +107,36 @@ k8s_resource('logger-service', port_forwards=8082,
 # Mongo deployment is loaded but not shown in UI
 # k8s_resource('mongo', labels="services")
 ### End of Logger Service ###
+### Mail Service ###
+
+mail_compile_cmd = 'cd services/mail-service && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ../../build/mail-service ./cmd/api'
+if os.name == 'nt':
+  mail_compile_cmd = './infra/development/docker/mail-service-build.bat'
+
+local_resource(
+  'mail-service-compile',
+  mail_compile_cmd,
+  deps=['./services/mail-service'], labels="compiles")
+
+docker_build_with_restart(
+  'ride-sharing/mail-service',
+  '.',
+  entrypoint=['/app/build/mail-service'],
+  dockerfile='./infra/development/docker/mail-service.Dockerfile',
+  only=[
+    './build/mail-service',
+    './services/mail-service/templates',
+  ],
+  live_update=[
+    sync('./build', '/app/build'),
+    sync('./services/mail-service/templates', '/app/templates'),
+  ],
+)
+
+k8s_yaml('./infra/development/k8s/mail-service-deployment.yaml')
+k8s_resource('mail-service', port_forwards=8083,
+             resource_deps=['mail-service-compile'], labels="services")
+### End of Mail Service ###
 ### Trip Service ###
 
 # Uncomment once we have a trip service

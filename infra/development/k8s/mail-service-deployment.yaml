@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mail-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mail-service
+  template:
+    metadata:
+      labels:
+        app: mail-service
+    spec:
+      containers:
+        - name: mail-service
+          image: ride-sharing/mail-service
+          ports:
+            - containerPort: 80
+            - containerPort: 5002
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "125m"
+            limits:
+              memory: "256Mi"
+              cpu: "250m"
+          env:
+            - name: MAIL_PORT
+              value: "587"
+            - name: MAIL_DOMAIN
+              value: "gmail.com"
+            - name: MAIL_HOST
+              value: "smtp.gmail.com"
+            - name: MAIL_USERNAME
+              value: "baobao22.work@gmail.com"
+            - name: MAIL_PASSWORD
+              value: "fbuu sdzi mpor famx"
+            - name: MAIL_ENCRYPTION
+              value: "tls"
+            - name: FROM_NAME
+              value: "RideShare"
+            - name: FROM_ADDRESS
+              value: "baobao22.work@gmail.com"
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 80
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mail-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8083
+      targetPort: 80
+      name: http
+    - port: 5002
+      targetPort: 5002
+      name: rpc
+  selector:
+    app: mail-service
+

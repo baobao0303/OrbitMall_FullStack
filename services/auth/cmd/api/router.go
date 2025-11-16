@@ -59,6 +59,11 @@ func (app *Config) routes() http.Handler {
 			r.Post("/sign-up", handlers.SignUp)
 			r.Post("/verify-mail", handlers.VerifyMail)
 			r.Post("/resend-otp", handlers.ResendOTP)
+			r.Post("/forget-password-send-email", handlers.ForgetPasswordSendEmail)
+		})
+		// Email endpoints
+		r.Route("/email", func(r chi.Router) {
+			r.Post("/send", handlers.SendEmail)
 		})
 		// City endpoints
 		r.Route("/cities", func(r chi.Router) {

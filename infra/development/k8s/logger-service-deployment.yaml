@@ -17,6 +17,7 @@ spec:
           image: ride-sharing/logger-service
           ports:
             - containerPort: 80
+            - containerPort: 5001
           env:
             - name: MONGO_URL
               value: "mongodb://admin:password@mongo:27017"
@@ -47,6 +48,10 @@ spec:
   ports:
     - port: 8082
       targetPort: 80
+      name: http
+    - port: 5001
+      targetPort: 5001
+      name: rpc
   selector:
     app: logger-service
 

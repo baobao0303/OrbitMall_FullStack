@@ -11,9 +11,11 @@ import (
 	"strings"
 	"time"
 
-	_ "github.com/jackc/pgx/v4/stdlib"
 	_ "ride-sharing/services/auth/cmd/api/docs" // Swagger docs
 	"ride-sharing/services/auth/cmd/api/handlers"
+
+	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/joho/godotenv"
 )
 
 // @title Auth Service API
@@ -36,6 +38,8 @@ type Config struct {
 }
 
 func main() {
+	// Load .env file from project root
+	loadEnvFile()
 
 	//log the start of the application
 	log.Println("Starting authentication service")
@@ -95,6 +99,9 @@ func openDB(dsn string) (*sql.DB, error) {
 
 func connectToDB() (*sql.DB, error) {
 	dsn := os.Getenv("DSN")
+	if dsn == "" {
+		dsn = "host=localhost port=5432 user=postgres password=password dbname=users sslmode=disable"
+	}
 	log.Println("Attempting to connect to PostgreSQL...")
 	for{
 		db, err := openDB(dsn)
@@ -186,4 +193,67 @@ func runMigrations(db *sql.DB) error {
 
 	log.Println("✅ All migrations completed!")
 	return nil
+}
+
+// loadEnvFile loads .env file from project root
+func loadEnvFile() {
+	var envPath string
+	var found bool
+
+	// Get current working directory
+	cwd, err := os.Getwd()
+	if err != nil {
+		log.Printf("⚠️  Could not get working directory: %v", err)
+		cwd = "."
+	}
+
+	// List of possible .env file locations to try
+	possiblePaths := []string{
+		".env",                                    // Current directory
+		filepath.Join("..", ".env"),              // Parent directory
+		filepath.Join("../..", ".env"),           // 2 levels up
+		filepath.Join("../../..", ".env"),        // 3 levels up
+		filepath.Join(cwd, ".env"),               // Absolute from current dir
+		filepath.Join(cwd, "..", ".env"),         // Absolute parent
+		filepath.Join(cwd, "../..", ".env"),      // Absolute 2 levels up
+		"/app/.env",                              // Common container path
+		"/app/../.env",                           // Container parent
+	}
+
+	// Try each path
+	for _, path := range possiblePaths {
+		if _, err := os.Stat(path); err == nil {
+			envPath = path
+			found = true
+			break
+		}
+	}
+
+	// If not found, try searching up from current directory
+	if !found {
+		dir := cwd
+		for i := 0; i < 10; i++ {
+			testPath := filepath.Join(dir, ".env")
+			if _, err := os.Stat(testPath); err == nil {
+				envPath = testPath
+				found = true
+				break
+			}
+			parent := filepath.Dir(dir)
+			if parent == dir {
+				break // Reached root
+			}
+			dir = parent
+		}
+	}
+
+	if found {
+		if err := godotenv.Load(envPath); err != nil {
+			log.Printf("⚠️  Found .env at %s but failed to load: %v", envPath, err)
+		} else {
+			log.Printf("✅ Loaded environment variables from: %s", envPath)
+		}
+	} else {
+		log.Printf("⚠️  .env file not found (searched from: %s), using environment variables or defaults", cwd)
+	}
 }

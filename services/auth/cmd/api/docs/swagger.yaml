@@ -20,6 +20,21 @@ definitions:
       updated_at:
         type: string
     type: object
+  handlers.ForgetPasswordSendEmailRequest:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+    type: object
+  handlers.ForgetPasswordSendEmailResponse:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      message:
+        example: Password reset email sent successfully
+        type: string
+    type: object
   handlers.RenewAccessTokenRequest:
     properties:
       vrto:
@@ -51,6 +66,37 @@ definitions:
         type: string
       verificationToken:
         example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        type: string
+    type: object
+  handlers.SendEmailRequest:
+    properties:
+      attachments:
+        items:
+          type: string
+        type: array
+      from:
+        example: noreply@rideshare.com
+        type: string
+      fromName:
+        example: RideShare
+        type: string
+      message:
+        example: Welcome to our platform!
+        type: string
+      subject:
+        example: Welcome to RideShare
+        type: string
+      to:
+        example: user@example.com
+        type: string
+    type: object
+  handlers.SendEmailResponse:
+    properties:
+      message:
+        example: Email sent successfully
+        type: string
+      to:
+        example: user@example.com
         type: string
     type: object
   handlers.SignInRequest:
@@ -171,6 +217,46 @@ info:
   title: Auth Service API
   version: "1.0"
 paths:
+  /api/v1/User/forget-password-send-email:
+    post:
+      consumes:
+      - application/json
+      description: Sends a password reset email to the user with reset token
+      parameters:
+      - description: Forget password request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.ForgetPasswordSendEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ForgetPasswordSendEmailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send password reset email
+      tags:
+      - User
   /api/v1/User/resend-otp:
     post:
       consumes:
@@ -442,4 +528,38 @@ paths:
       summary: Sync cities data
       tags:
       - City
+  /api/v1/email/send:
+    post:
+      consumes:
+      - application/json
+      description: Sends an email using the mail service via RPC
+      parameters:
+      - description: Email request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.SendEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.SendEmailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send email
+      tags:
+      - Email
 swagger: "2.0"

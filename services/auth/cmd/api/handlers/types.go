@@ -88,3 +88,14 @@ type ResendOTPResponse struct {
 	VerificationToken string `json:"verificationToken" example:"3fa85f64-5717-4562-b3fc-2c963f66afa6"`
 }
 
+// ForgetPasswordSendEmailRequest represents the request body for forget password send email
+type ForgetPasswordSendEmailRequest struct {
+	Email string `json:"email" example:"user@example.com"`
+}
+
+// ForgetPasswordSendEmailResponse represents the response for forget password send email
+type ForgetPasswordSendEmailResponse struct {
+	Message string `json:"message" example:"Password reset email sent successfully"`
+	Email   string `json:"email" example:"user@example.com"`
+}
+

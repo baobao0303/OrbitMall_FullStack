@@ -107,7 +107,7 @@ func SignIn(w http.ResponseWriter, r *http.Request) {
 	// 5. Generate JWT tokens
 	jwtSecret := os.Getenv("JWT_SECRET")
 	if jwtSecret == "" {
-		jwtSecret = "your-secret-key-change-in-production" // Default secret, should be set via environment variable
+		jwtSecret = "your-secret-key-change-in-production" // Default secret, should be set via .env file
 	}
 
 	// Generate access token
