@@ -97,3 +97,13 @@ vendor/
 *.coverprofile
 coverage.html
 coverage.out
+
+# .NET build artifacts
+**/obj/
+**/bin/
+*.csproj.user
+*.user
+*.suo
+*.cache
+*.dll
+*.pdb
