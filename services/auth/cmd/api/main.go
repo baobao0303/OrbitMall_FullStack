@@ -6,11 +6,26 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"ride-sharing/services/auth/data"
+	"strings"
 	"time"
 
 	_ "github.com/jackc/pgx/v4/stdlib"
+	_ "ride-sharing/services/auth/cmd/api/docs" // Swagger docs
+	"ride-sharing/services/auth/cmd/api/handlers"
 )
+
+// @title Auth Service API
+// @version 1.0
+// @description Authentication Service API Documentation
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.email support@example.com
+
+// @host localhost:8080
+// @BasePath /
 
 const webPort = "80"
 var counts int64
@@ -33,11 +48,20 @@ func main() {
 		os.Exit(1)
 	}
 
+	// run migrations
+	if err := runMigrations(db); err != nil {
+		log.Printf("Warning: Error running migrations: %v\n", err)
+		// Continue anyway - migrations might already be applied
+	}
+
 	// setup config
 	app := Config{
 		DB: db,
 		Models: data.New(db),
 	}
+
+	// Set models instance for handlers
+	handlers.SetModels(&app.Models)
 
 
 	src := &http.Server{
@@ -87,4 +111,79 @@ func connectToDB() (*sql.DB, error) {
 		log.Println("✅ Successfully connected to PostgreSQL!")
 		return db, nil
 	}
+}
+
+// runMigrations executes all SQL migration files in the migrations directory
+func runMigrations(db *sql.DB) error {
+	// Try multiple possible paths for migrations
+	migrationPaths := []string{
+		"./migrations",
+		"/app/migrations",
+		"../../migrations",
+		"../migrations",
+		"services/auth/migrations",
+	}
+
+	var migrationsDir string
+	for _, path := range migrationPaths {
+		if _, err := os.Stat(path); err == nil {
+			migrationsDir = path
+			break
+		}
+	}
+
+	if migrationsDir == "" {
+		log.Println("⚠️  Migrations directory not found, skipping migrations")
+		return nil
+	}
+
+	log.Printf("📦 Running migrations from: %s\n", migrationsDir)
+
+	// Read all SQL files in migrations directory
+	files, err := os.ReadDir(migrationsDir)
+	if err != nil {
+		return fmt.Errorf("error reading migrations directory: %v", err)
+	}
+
+	// Sort files by name to ensure correct order
+	var sqlFiles []string
+	for _, file := range files {
+		if !file.IsDir() && strings.HasSuffix(file.Name(), ".sql") {
+			sqlFiles = append(sqlFiles, file.Name())
+		}
+	}
+
+	if len(sqlFiles) == 0 {
+		log.Println("⚠️  No migration files found")
+		return nil
+	}
+
+	// Execute each migration file
+	for _, fileName := range sqlFiles {
+		filePath := filepath.Join(migrationsDir, fileName)
+		log.Printf("🔄 Running migration: %s\n", fileName)
+
+		sqlContent, err := os.ReadFile(filePath)
+		if err != nil {
+			log.Printf("❌ Error reading migration file %s: %v\n", fileName, err)
+			continue
+		}
+
+		// Execute the SQL
+		_, err = db.Exec(string(sqlContent))
+		if err != nil {
+			// Check if error is because table already exists (migration already run)
+			if strings.Contains(err.Error(), "already exists") || 
+			   strings.Contains(err.Error(), "duplicate key") {
+				log.Printf("ℹ️  Migration %s already applied, skipping\n", fileName)
+				continue
+			}
+			return fmt.Errorf("error executing migration %s: %v", fileName, err)
+		}
+
+		log.Printf("✅ Migration %s completed successfully\n", fileName)
+	}
+
+	log.Println("✅ All migrations completed!")
+	return nil
 }

@@ -8,6 +8,7 @@ load('ext://restart_process', 'docker_build_with_restart')
 
 k8s_yaml('./infra/development/k8s/app-config.yaml')
 k8s_yaml('./infra/development/k8s/postgres-deployment.yaml')
+k8s_yaml('./infra/development/k8s/mongo-deployment.yaml')
 
 ### End of K8s Config ###
 ### API Gateway ###
@@ -61,10 +62,12 @@ docker_build_with_restart(
   only=[
     './build/auth',
     './shared',
+    './services/auth/migrations',
   ],
   live_update=[
     sync('./build', '/app/build'),
     sync('./shared', '/app/shared'),
+    sync('./services/auth/migrations', '/app/migrations'),
   ],
 )
 
@@ -74,6 +77,36 @@ k8s_resource('auth', port_forwards=8080,
 # Postgres deployment is loaded but not shown in UI
 # k8s_resource('postgres', labels="services")
 ### End of Auth Service ###
+### Logger Service ###
+
+logger_compile_cmd = 'cd services/logger-service && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o ../../build/logger-service ./cmd/api'
+if os.name == 'nt':
+  logger_compile_cmd = './infra/development/docker/logger-service-build.bat'
+
+local_resource(
+  'logger-service-compile',
+  logger_compile_cmd,
+  deps=['./services/logger-service'], labels="compiles")
+
+docker_build_with_restart(
+  'ride-sharing/logger-service',
+  '.',
+  entrypoint=['/app/build/logger-service'],
+  dockerfile='./infra/development/docker/logger-service.Dockerfile',
+  only=[
+    './build/logger-service',
+  ],
+  live_update=[
+    sync('./build', '/app/build'),
+  ],
+)
+
+k8s_yaml('./infra/development/k8s/logger-service-deployment.yaml')
+k8s_resource('logger-service', port_forwards=8082,
+             resource_deps=['logger-service-compile'], labels="services")
+# Mongo deployment is loaded but not shown in UI
+# k8s_resource('mongo', labels="services")
+### End of Logger Service ###
 ### Trip Service ###
 
 # Uncomment once we have a trip service
@@ -118,26 +151,28 @@ k8s_yaml('./infra/development/k8s/web-deployment.yaml')
 k8s_resource('web-trip', port_forwards=3000, labels="frontend")
 
 # Web Portal (Angular SSR)
-docker_build(
-  'ride-sharing/web-portal',
-  '.',
-  dockerfile='./infra/development/docker/web-portal.Dockerfile',
-)
-
-k8s_yaml('./infra/development/k8s/web-portal-deployment.yaml')
-k8s_resource('web-portal', port_forwards=4000, labels="frontend")
+# Temporarily disabled - uncomment to enable
+# docker_build(
+#   'ride-sharing/web-portal',
+#   '.',
+#   dockerfile='./infra/development/docker/web-portal.Dockerfile',
+# )
+# 
+# k8s_yaml('./infra/development/k8s/web-portal-deployment.yaml')
+# k8s_resource('web-portal', port_forwards=4000, labels="frontend")
 
 ### End of Web Frontend ###
 ### Portal API Gateway ###
 
-docker_build(
-  'ride-sharing/portal-api-gateway',
-  '.',
-  dockerfile='./infra/development/docker/portal-api-gateway.Dockerfile',
-)
-
-k8s_yaml('./infra/development/k8s/portal-api-gateway-deployment.yaml')
-k8s_resource('portal-api-gateway', port_forwards=5050, labels="services")
+# Temporarily disabled - uncomment to enable
+# docker_build(
+#   'ride-sharing/portal-api-gateway',
+#   '.',
+#   dockerfile='./infra/development/docker/portal-api-gateway.Dockerfile',
+# )
+# 
+# k8s_yaml('./infra/development/k8s/portal-api-gateway-deployment.yaml')
+# k8s_resource('portal-api-gateway', port_forwards=5050, labels="services")
 
 ### End of Portal API Gateway ###
 ### API .NET Gateway ###

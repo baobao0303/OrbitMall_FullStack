@@ -15,6 +15,8 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 // randomStringSource is the source for generating random strings.
@@ -447,4 +449,21 @@ func (t *Tools) ErrorXML(w http.ResponseWriter, err error, status ...int) error 
 	payload.Message = err.Error()
 
 	return t.WriteXML(w, statusCode, payload)
+}
+
+// GenerateUUID generates and returns a new UUID v4 as a string.
+// This is a helper function to create UUIDs for user IDs and other entities.
+// Example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+func GenerateUUID() string {
+	return uuid.New().String()
+}
+
+// GenerateUUIDWithError generates and returns a new UUID v4 as a string, along with any error.
+// Use this version if you need to handle potential errors during UUID generation.
+func GenerateUUIDWithError() (string, error) {
+	id, err := uuid.NewRandom()
+	if err != nil {
+		return "", err
+	}
+	return id.String(), nil
 }
