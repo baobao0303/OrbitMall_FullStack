@@ -1,0 +1,6 @@
+@RideSharing.Api_HostAddress = http://localhost:8084
+
+GET {{RideSharing.Api_HostAddress}}/health
+Accept: application/json
+
+###
