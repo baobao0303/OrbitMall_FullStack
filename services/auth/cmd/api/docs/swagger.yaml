@@ -1,0 +1,565 @@
+basePath: /
+definitions:
+  data.City:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      parent_code:
+        type: string
+      province_code:
+        type: string
+      type:
+        description: '''province'' or ''ward'''
+        type: string
+      updated_at:
+        type: string
+    type: object
+  handlers.ForgetPasswordSendEmailRequest:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+    type: object
+  handlers.ForgetPasswordSendEmailResponse:
+    properties:
+      email:
+        example: user@example.com
+        type: string
+      message:
+        example: Password reset email sent successfully
+        type: string
+    type: object
+  handlers.RenewAccessTokenRequest:
+    properties:
+      vrto:
+        example: refresh_token_string
+        type: string
+    type: object
+  handlers.RenewAccessTokenResponse:
+    properties:
+      accessToken:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      expiresIn:
+        example: 3600
+        type: integer
+      refreshToken:
+        example: refresh_token_string
+        type: string
+    type: object
+  handlers.ResendOTPRequest:
+    properties:
+      verificationOTPCode:
+        example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        type: string
+    type: object
+  handlers.ResendOTPResponse:
+    properties:
+      message:
+        example: OTP sent successfully
+        type: string
+      verificationToken:
+        example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        type: string
+    type: object
+  handlers.SendEmailRequest:
+    properties:
+      attachments:
+        items:
+          type: string
+        type: array
+      from:
+        example: noreply@rideshare.com
+        type: string
+      fromName:
+        example: RideShare
+        type: string
+      message:
+        example: Welcome to our platform!
+        type: string
+      subject:
+        example: Welcome to RideShare
+        type: string
+      to:
+        example: user@example.com
+        type: string
+    type: object
+  handlers.SendEmailResponse:
+    properties:
+      message:
+        example: Email sent successfully
+        type: string
+      to:
+        example: user@example.com
+        type: string
+    type: object
+  handlers.SignInRequest:
+    properties:
+      code:
+        example: "123456"
+        type: string
+      password:
+        example: password123
+        type: string
+      userName:
+        example: john.doe@example.com
+        type: string
+    type: object
+  handlers.SignInResponse:
+    properties:
+      accessToken:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      expiresIn:
+        example: 3600
+        type: integer
+      refreshToken:
+        example: refresh_token_string
+        type: string
+      userId:
+        example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        type: string
+      userName:
+        example: john.doe@example.com
+        type: string
+    type: object
+  handlers.SignUpRequest:
+    properties:
+      cityId:
+        description: Will be parsed to int
+        example: "1"
+        type: string
+      dob:
+        description: ISO 8601 date format
+        example: "1990-01-15T00:00:00Z"
+        type: string
+      email:
+        example: john.doe@example.com
+        type: string
+      firstName:
+        example: John
+        type: string
+      genderId:
+        description: Will be parsed to int
+        example: "1"
+        type: string
+      invitationToken:
+        example: invitation_token_string
+        type: string
+      lastName:
+        example: Doe
+        type: string
+      middleName:
+        example: Michael
+        type: string
+      password:
+        example: password123
+        type: string
+    type: object
+  handlers.SignUpResponse:
+    properties:
+      email:
+        example: john.doe@example.com
+        type: string
+      firstName:
+        example: John
+        type: string
+      lastName:
+        example: Doe
+        type: string
+      message:
+        example: User registered successfully
+        type: string
+      userId:
+        example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        type: string
+    type: object
+  handlers.VerifyAccessTokenResponse:
+    properties:
+      message:
+        example: Token is valid
+        type: string
+      valid:
+        example: true
+        type: boolean
+    type: object
+  handlers.VerifyMailRequest:
+    properties:
+      otp:
+        example: "123456"
+        type: string
+      verificationOTPCode:
+        example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        type: string
+    type: object
+  handlers.VerifyMailResponse:
+    properties:
+      message:
+        example: Email verified successfully
+        type: string
+      userId:
+        example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+  description: Authentication Service API Documentation
+  termsOfService: http://swagger.io/terms/
+  title: Auth Service API
+  version: "1.0"
+paths:
+  /api/v1/User/forget-password-send-email:
+    post:
+      consumes:
+      - application/json
+      description: Sends a password reset email to the user with reset token
+      parameters:
+      - description: Forget password request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.ForgetPasswordSendEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ForgetPasswordSendEmailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send password reset email
+      tags:
+      - User
+  /api/v1/User/resend-otp:
+    post:
+      consumes:
+      - application/json
+      description: Resends OTP code for email verification
+      parameters:
+      - description: Resend OTP request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.ResendOTPRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ResendOTPResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Resend OTP
+      tags:
+      - User
+  /api/v1/User/sign-in:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates a user with userName, password, and optional code
+      parameters:
+      - description: Sign-in request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.SignInRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.SignInResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: User sign-in
+      tags:
+      - User
+  /api/v1/User/sign-up:
+    post:
+      consumes:
+      - application/json
+      description: Registers a new user with provided information
+      parameters:
+      - description: Sign-up request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.SignUpRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handlers.SignUpResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: User sign-up
+      tags:
+      - User
+  /api/v1/User/verify-mail:
+    post:
+      consumes:
+      - application/json
+      description: Verifies user email using verification token and OTP code
+      parameters:
+      - description: Verify mail request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.VerifyMailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.VerifyMailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Verify email
+      tags:
+      - User
+  /api/v1/XFWToken/renew-access-token:
+    post:
+      consumes:
+      - application/json
+      description: Renews an access token using a valid refresh token (vrto)
+      parameters:
+      - description: Refresh token request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.RenewAccessTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.RenewAccessTokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Renew access token
+      tags:
+      - XFWToken
+  /api/v1/XFWToken/verify-access-token:
+    get:
+      consumes:
+      - application/json
+      description: Verifies if the provided access token is valid
+      parameters:
+      - description: Access token to verify
+        in: query
+        name: token
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.VerifyAccessTokenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Verify access token
+      tags:
+      - XFWToken
+  /api/v1/cities/provinces:
+    get:
+      consumes:
+      - application/json
+      description: Returns all provinces from database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/data.City'
+            type: array
+      summary: Get all provinces
+      tags:
+      - City
+  /api/v1/cities/provinces/{province_code}/wards:
+    get:
+      consumes:
+      - application/json
+      description: Returns all wards for a specific province
+      parameters:
+      - description: Province Code
+        in: path
+        name: province_code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/data.City'
+            type: array
+      summary: Get wards by province code
+      tags:
+      - City
+  /api/v1/cities/sync:
+    post:
+      consumes:
+      - application/json
+      description: Fetches provinces and wards from 34tinhthanh.com API and stores
+        them in database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Sync cities data
+      tags:
+      - City
+  /api/v1/email/send:
+    post:
+      consumes:
+      - application/json
+      description: Sends an email using the mail service via RPC
+      parameters:
+      - description: Email request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.SendEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.SendEmailResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Send email
+      tags:
+      - Email
+swagger: "2.0"

@@ -62,3 +62,48 @@ build/
 
 # Secrets
 secrets.yaml
+
+# Auth Service specific
+services/auth/db-data/
+services/auth/bin/
+services/auth/*.test
+services/auth/*.exe
+services/auth/*.out
+services/auth/coverage.out
+services/auth/coverage.html
+
+# Go build artifacts and binaries
+services/auth/**/*.test
+services/auth/**/auth
+services/auth/**/*.exe
+services/auth/**/vendor/
+
+# PostgreSQL data (should not be committed - contains database files)
+**/db-data/
+**/postgres-data/
+**/*.db
+**/*.sqlite
+**/*.sqlite3
+
+# Go specific (for all Go services)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+vendor/
+*.coverprofile
+coverage.html
+coverage.out
+
+# .NET build artifacts
+**/obj/
+**/bin/
+*.csproj.user
+*.user
+*.suo
+*.cache
+*.dll
+*.pdb
