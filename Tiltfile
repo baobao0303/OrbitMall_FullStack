@@ -207,7 +207,7 @@ k8s_resource('web-trip', port_forwards=3000, labels="frontend")
 ### End of Portal API Gateway ###
 ### API .NET Gateway ###
 
-# DISABLED - Run locally with: cd services/api-net-gateway/OrbitMall.Api && dotnet run --urls "http://localhost:8084"
+# DISABLED - Run locally with: cd services/api-net-gateway/RideSharing.Api && dotnet run --urls "http://localhost:8084"
 # This is disabled in Tilt to avoid port conflicts when running locally
 # docker_build(
 #   'ride-sharing/api-net-gateway',
